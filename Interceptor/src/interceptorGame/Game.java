@@ -13,6 +13,7 @@ public class Game extends Frame {
 	static ArrayList<Missile> missiles=new ArrayList<Missile>();
 	static ArrayList<Bullet> bullets=new ArrayList<Bullet>();
 	static ArrayList<Laser> lasers=new ArrayList<Laser>();
+	static ArrayList<Powerup> powerups=new ArrayList<Powerup>();
 	Ship ship;
 	Background background;
 	boolean paused;
@@ -103,6 +104,36 @@ public class Game extends Frame {
 		    		}
 		    	} catch(java.util.ConcurrentModificationException e){}
 		    }
+		    Iterator pIter = powerups.iterator();
+		    while (pIter.hasNext()) {
+		    	try{
+		    		Powerup p=(Powerup)pIter.next();
+		    		if(p.getY()>size){
+		    			try{
+		    				pIter.remove();
+		    			}catch (IllegalStateException e){}
+		    	    }
+		    		if(p.distanceFrom(ship.getX(),ship.getY())<ship.size/2+Powerup.size/2){	  
+		    			try{
+	    					pIter.remove();
+	    				}catch (IllegalStateException e){}
+    					if(p.type=="H"){
+    						ship.health=15;
+    					}
+    					else if (p.type=="B"){
+    						g.setColor(new Color(0,100,255));
+    						for(double i=0;i<size*2;i+=1.5){
+    							g.fillOval(p.getX()-(int)(i/2), p.getY()-(int)(i/2), (int)(i),(int)(i));
+    						}
+    						mNum=0;
+    						missiles.clear();
+    						bullets.clear();
+    						lasers.clear();
+    						powerups.clear();
+    					}
+		    		}
+		    	} catch(java.util.ConcurrentModificationException e){}
+		    }
 	}
 	public void run(){
 	ship=new Ship(size/2,size/2);
@@ -113,7 +144,7 @@ public class Game extends Frame {
 	    	if(System.currentTimeMillis()-tprev>2000){
 	    		if(!bossTime){
 	    		 if(boss==null){
-	    			if(score%10==0 && score!=0){
+	    			if(score%100==0 && score!=0){
 	    				bossTime=true;
 	    			}
 	    			if(mNum<missileNum){ 
@@ -134,6 +165,14 @@ public class Game extends Frame {
 	    			tLaunch=System.currentTimeMillis();
 	    			bossTime=false;
 	    		}
+	    		if(Math.random()<.1){
+	    			Powerup p;
+	    			if(Math.random()>.5){
+	    			p=new Powerup((int)(Math.random()*size),(int)(Math.random()*4),"H");
+	    			}
+	    			else p=new Powerup((int)(Math.random()*size),(int)(Math.random()*4),"B");
+	    			powerups.add(p);
+	    		}
 				tprev=System.currentTimeMillis();
 	    	}
 	    	repaint();  
@@ -148,6 +187,7 @@ public class Game extends Frame {
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Serif", Font.BOLD, 55));
 		    g.drawString("Interceptor",size/2-135,size/2+20);
+		    return;
 		}
 		else if(System.currentTimeMillis()-tStart>2001 && System.currentTimeMillis()-tStart<7000){
 			g.setColor(Color.WHITE);
@@ -205,6 +245,10 @@ public class Game extends Frame {
 						for(int i=0;i<lasers.size();i++){
 							lasers.get(i).move();
 							lasers.get(i).paint(g);
+						}
+						for(int i=0;i<powerups.size();i++){
+							powerups.get(i).move();
+							powerups.get(i).paint(g);
 						}
 						if(boss!=null){
 							if(System.currentTimeMillis()-tLaunch>4000){
