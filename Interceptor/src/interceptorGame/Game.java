@@ -40,8 +40,8 @@ public class Game extends Frame {
 	public Ship getShip(){
 	  return ship;
 	}
-	private void interact(Graphics g) {
-			Iterator bIter = bullets.iterator();
+	public void interact(Graphics g) {
+		    Iterator bIter = bullets.iterator();
 		    while (bIter.hasNext()) {
 		    	try{
 		    		Bullet b = (Bullet) bIter.next();
@@ -105,87 +105,87 @@ public class Game extends Frame {
 		    }
 	}
 	public void run(){
-	ship=new Ship(size/2,size/2);
-	background=new Background();
-	long tprev=System.currentTimeMillis();
-	while(!newGame){
-	    if(ship.health>0){
-	    	if(System.currentTimeMillis()-tprev>2000){
-	    		if(!bossTime){
-	    		 if(boss==null){
-	    			if(score%10==0 && score!=0){
-	    				bossTime=true;
-	    			}
-	    			if(mNum<missileNum){ 
-	    				mNum++;
-	    				if(Math.random()<.5){
-	    					Missile m=new Missile((int)(Math.random()*900),0,ship); 
-	    					missiles.add(m);
-	    				}
-	    				else{
-	    					Dart m=new Dart((int)(Math.random()*900),0, ship);
-	    					missiles.add(m);
-	    				}
-	    			}
-	    		 }
-	    		}
-	    		else if(mNum==0) {
-	    			boss=new Boss (size/2-50,0,ship);
-	    			tLaunch=System.currentTimeMillis();
-	    			bossTime=false;
-	    		}
-				tprev=System.currentTimeMillis();
-	    	}
-	    	repaint();  
-	    	long tPaint=System.currentTimeMillis();
-			while(System.currentTimeMillis()-tPaint<25){//I originally used thread.sleep(), but it significantly decreased the fps rate so I switched to this while loop
-	    	} 
-		} 
-	 }
+		ship=new Ship(size/2,size/2);
+		background=new Background();
+		long tprev=System.currentTimeMillis();
+		while(!newGame){
+		    if(ship.health>0){
+		    	if(System.currentTimeMillis()-tprev>2000){
+		    		if(!bossTime){
+		    		 if(boss==null){
+		    			if(score%10==0 && score!=0){
+		    				bossTime=true;
+		    			}
+		    			if(mNum<missileNum){ 
+		    				mNum++;
+		    				if(Math.random()<.5){
+		    					Missile m=new Missile((int)(Math.random()*900),0,ship); 
+		    					missiles.add(m);
+		    				}
+		    				else{
+		    					Dart m=new Dart((int)(Math.random()*900),0, ship);
+		    					missiles.add(m);
+		    				}
+		    			}
+		    		 }
+		    		}
+		    		else if(mNum==0) {
+		    			boss=new Boss (size/2-50,0,ship);
+		    			tLaunch=System.currentTimeMillis();
+		    			bossTime=false;
+		    		}
+					tprev=System.currentTimeMillis();
+		    	}
+		    	repaint();  
+		    	long tPaint=System.currentTimeMillis();
+				while(System.currentTimeMillis()-tPaint<25){//I originally used thread.sleep(), but it significantly decreased the fps rate so I switched to this while loop
+		    		} 
+			} 
+		 }
 	}
 	public void paint(Graphics g){
-		if(System.currentTimeMillis()-tStart<2000){
+		if(System.currentTimeMillis()-tStart<2000){//title
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Serif", Font.BOLD, 55));
-		    g.drawString("Interceptor",size/2-135,size/2+20);
+			g.drawString("Interceptor",size/2-135,size/2+20);
 		}
-		else if(System.currentTimeMillis()-tStart>2001 && System.currentTimeMillis()-tStart<7000){
+		else if(System.currentTimeMillis()-tStart>2001 && System.currentTimeMillis()-tStart<7000){//instructions
 			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", Font.BOLD, 50));
-		    g.drawString("Instructions",size/2-150,100);
-		    g.setFont(new Font("Arial", Font.BOLD, 25));
-		    g.drawString("This is your ship: ",200,180);
-		    g.setColor(Color.GREEN);
-		    g.fillOval(450-40/2,170-40/2,40,40);
-		    g.setColor(Color.DARK_GRAY);
-		    g.drawLine(450,170,(int)(450+30*Math.cos(45)),(int)(170-30*Math.sin(45)));
-		    g.setColor(Color.WHITE);
-		    g.drawString("Control it with W, A, S and D",150,250);
-		    g.drawString("Use the mouse to aim and the spacebar to shoot",50,300);
-		    g.setColor(Color.GREEN);
-		    g.fillOval(250-40/2,370-40/2,40,40);
-		    g.setColor(Color.DARK_GRAY);
-		    g.drawLine(250,370,(int)(250+30*Math.cos(0)),(int)(370-30*Math.sin(0)));
-		    g.setColor(Color.DARK_GRAY);
-		    int[] xvals= {330+13*-1/2,330-13*-2/2,330+13*-1/2};
-	    	int[] yvals= {370-13/2,370,370+13/2};
-	    	g.fillPolygon(xvals,yvals,3);
-	    	int[] xvalsa= {400+13*-1/2,400-13*-2/2,400+13*-1/2};
-	    	int[] yvalsa= {370-13/2,370,370+13/2};
-	    	g.fillPolygon(xvalsa,yvalsa,3);
-		    g.setColor(Color.WHITE);
-		    g.drawString("Press P to pause and N to start a new game",100,450);
-	    	g.drawString("These are missiles: ",170,550);
-	    	g.setColor(new Color(125,125,0));
-	    	int[] xvalsb= {440-20/2,440,440+20/2};
-	    	int[] yvalsb= {545+20*1/2,545-20*2/2,545+20*1/2};	
-	    	g.fillPolygon(xvalsb,yvalsb,3);
-	    	g.setColor(Color.BLUE);
-	    	int[] xvalsc= {490-20/2,490,490+20/2};
-	    	int[] yvalsc= {545+20*1/2,545-20*2/2,545+20*1/2};		
-	    	g.fillPolygon(xvalsc,yvalsc,3);
-	    	g.setColor(Color.WHITE);
-	    	g.drawString("Destroy them!",size/2-100,610);
+	  		g.setFont(new Font("Arial", Font.BOLD, 50));
+			g.drawString("Instructions",size/2-150,100);
+			g.setFont(new Font("Arial", Font.BOLD, 25));
+			g.drawString("This is your ship: ",200,180);
+			g.setColor(Color.GREEN);
+			g.fillOval(450-40/2,170-40/2,40,40);
+			g.setColor(Color.DARK_GRAY);
+			g.drawLine(450,170,(int)(450+30*Math.cos(45)),(int)(170-30*Math.sin(45)));
+			g.setColor(Color.WHITE);
+			g.drawString("Control it with W, A, S and D",150,250);
+			g.drawString("Use the mouse to aim and the spacebar to shoot",50,300);
+			g.setColor(Color.GREEN);
+	       	        g.fillOval(250-40/2,370-40/2,40,40);
+		        g.setColor(Color.DARK_GRAY);
+			g.drawLine(250,370,(int)(250+30*Math.cos(0)),(int)(370-30*Math.sin(0)));
+		  	g.setColor(Color.DARK_GRAY);
+			int[] xvals= {330+13*-1/2,330-13*-2/2,330+13*-1/2};
+		    	int[] yvals= {370-13/2,370,370+13/2};
+		    	g.fillPolygon(xvals,yvals,3);
+		    	int[] xvalsa= {400+13*-1/2,400-13*-2/2,400+13*-1/2};
+		    	int[] yvalsa= {370-13/2,370,370+13/2};
+		    	g.fillPolygon(xvalsa,yvalsa,3);
+			g.setColor(Color.WHITE);
+			g.drawString("Press P to pause and N to start a new game",100,450);
+		    	g.drawString("These are missiles: ",170,550);
+		    	g.setColor(new Color(125,125,0));
+		    	int[] xvalsb= {440-20/2,440,440+20/2};
+		    	int[] yvalsb= {545+20*1/2,545-20*2/2,545+20*1/2};	
+		    	g.fillPolygon(xvalsb,yvalsb,3);
+		    	g.setColor(Color.BLUE);
+		    	int[] xvalsc= {490-20/2,490,490+20/2};
+		    	int[] yvalsc= {545+20*1/2,545-20*2/2,545+20*1/2};		
+		    	g.fillPolygon(xvalsc,yvalsc,3);
+		    	g.setColor(Color.WHITE);
+		    	g.drawString("Destroy them!",size/2-100,610);
 		}
 		else if( System.currentTimeMillis()-tStart>7001){
 			if(boss==null||boss.health>0){
