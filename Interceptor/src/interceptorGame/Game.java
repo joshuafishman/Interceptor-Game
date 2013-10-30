@@ -6,8 +6,9 @@ import java.awt.Graphics;
 import java.util.*;
 
 public class Game extends Frame {
-	int missileNum=7;
-	int mNum;
+	int missileNum=10;// max number of missiles
+	int mNum;// current number of missiles
+	int bNum=250;// number of enemies before boss appears 
 	int score=0;
 	static int size=700;
 	static ArrayList<Missile> missiles=new ArrayList<Missile>();
@@ -15,13 +16,13 @@ public class Game extends Frame {
 	static ArrayList<Laser> lasers=new ArrayList<Laser>();
 	static ArrayList<Powerup> powerups=new ArrayList<Powerup>();
 	Ship ship;
+	Boss  boss;
 	Background background;
 	boolean paused;
 	boolean newGame;
 	boolean bossTime;//time to make a boss
 	boolean bossKilled=true;//boss has just been killed (starts out true because it is only referenced if the boss's health is 0)
 	long bTime;//time since boss has been destroyed
-	Boss  boss;
 	long tStart;
 	long tLaunch;
 	long tShot;
@@ -140,46 +141,45 @@ public class Game extends Frame {
 	background=new Background();
 	long tprev=System.currentTimeMillis();
 	while(!newGame){
-	    if(ship.health>0){
-	    	if(System.currentTimeMillis()-tprev>2000){
-	    		if(!bossTime){
-	    		 if(boss==null){
-	    			if(score%100==0 && score!=0){
-	    				bossTime=true;
-	    			}
-	    			if(mNum<missileNum){ 
-	    				mNum++;
-	    				if(Math.random()<.5){
-	    					Missile m=new Missile((int)(Math.random()*900),0,ship); 
-	    					missiles.add(m);
-	    				}
-	    				else{
-	    					Dart m=new Dart((int)(Math.random()*900),0, ship);
-	    					missiles.add(m);
-	    				}
-	    			}
-	    		 }
-	    		}
-	    		else if(mNum==0) {
-	    			boss=new Boss (size/2-50,0,ship);
-	    			tLaunch=System.currentTimeMillis();
-	    			bossTime=false;
-	    		}
-	    		if(Math.random()<.1){
-	    			Powerup p;
-	    			if(Math.random()>.5){
-	    			p=new Powerup((int)(Math.random()*size),(int)(Math.random()*4),"H");
-	    			}
-	    			else p=new Powerup((int)(Math.random()*size),(int)(Math.random()*4),"B");
-	    			powerups.add(p);
-	    		}
-				tprev=System.currentTimeMillis();
-	    	}
-	    	repaint();  
-	    	long tPaint=System.currentTimeMillis();
-			while(System.currentTimeMillis()-tPaint<25){//I originally used thread.sleep(), but it significantly decreased the fps rate so I switched to this while loop
-	    	} 
-		} 
+		    if(ship.health>0){
+		    	if(System.currentTimeMillis()-tprev>750&&!paused){
+		    		if(!bossTime){
+		    		 if(boss==null){
+		    			if(score%bNum==0 && score!=0){
+		    				bossTime=true;
+		    			}
+		    			if(mNum<missileNum){ 
+		    				mNum++;
+		    				if(Math.random()<.5){
+		    					Missile m=new Missile((int)(Math.random()*900),0,ship); 
+		    					missiles.add(m);
+		    				}
+		    				else{
+		    					Dart m=new Dart((int)(Math.random()*900),0, ship);
+		    					missiles.add(m);
+		    				}
+		    			}
+		    		 }
+		    		}
+		    		else if(mNum==0) {
+		    			boss=new Boss (size/2-50,0,ship);
+		    			tLaunch=System.currentTimeMillis();
+		    			bossTime=false;
+		    		}
+		    		if(Math.random()<1.0/15.0){
+		    			Powerup p;
+		    			if(Math.random()>.5){
+		    			p=new Powerup((int)(Math.random()*size),(int)(Math.random()*4),"H");
+		    			}
+		    			else p=new Powerup((int)(Math.random()*size),(int)(Math.random()*4),"B");
+		    			powerups.add(p);
+		    		}
+					tprev=System.currentTimeMillis();
+		    	} 
+		    	long tPaint=System.currentTimeMillis();
+				while(System.currentTimeMillis()-tPaint<25){}//I originally used thread.sleep(), but it significantly decreased the fps rate so I switched to this while loop
+		    	repaint(); 
+			} 
 	 }
 	}
 	public void paint(Graphics g){
@@ -268,6 +268,14 @@ public class Game extends Frame {
 						g.setFont(new Font("Arial", Font.BOLD, 20));
 						g.drawString("SCORE:"+Integer.toString(score),575,675);
 						g.setColor(cPrev);
+						if(ship.health==0){
+							g.setColor(Color.RED);  
+						    g.setFont(new Font("Serif", Font.BOLD, 40));
+						    g.drawString("GAME OVER",size/2-125,size/2);
+						    g.setColor(Color.WHITE);
+						    g.setFont(new Font("Arial", Font.BOLD, 22));
+						    g.drawString("Press N to play again",size/2-107,size/2+50);
+						 }
 					}    
 					else if(paused){ 
 						g.setColor(Color.WHITE);  
@@ -294,14 +302,6 @@ public class Game extends Frame {
 						g.setColor(cPrev);
 						}
 					}
-					if(ship.health==0){
-						g.setColor(Color.RED);  
-					    g.setFont(new Font("Serif", Font.BOLD, 40));
-					    g.drawString("GAME OVER",size/2-125,size/2);
-					    g.setColor(Color.WHITE);
-					    g.setFont(new Font("Arial", Font.BOLD, 22));
-					    g.drawString("Press N to play again",size/2-107,size/2+50);
-					 }
 			else if (boss!=null && boss.health==0){
 				if(bossKilled){
 				bTime=System.currentTimeMillis();

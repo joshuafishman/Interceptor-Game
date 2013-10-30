@@ -42,7 +42,7 @@ public class Background {
 			b=Math.random();
 		}
 		public void paint(Graphics g){
-			g.setColor(new Color(255,255,255,100+(int)(b*155)));
+			g.setColor(new Color(255,255,255,(int)(b*255)));
 			g.fillOval(x, (int)(y), radius, radius);
 		}
 	}

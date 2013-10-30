@@ -41,7 +41,7 @@ public class Bullet {
     ycoord+=y;
   } 
   public void explode(Graphics g){
-	  for(int i=0;i<700;i++){
+	  for(int i=0;i<1000;i++){
 	  g.setColor(Color.ORANGE);
 	  g.drawOval(xcoord+dirX*size/2,ycoord+dirY*size/2,size,size);
 	  }

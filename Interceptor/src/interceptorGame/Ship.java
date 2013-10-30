@@ -19,7 +19,7 @@ public class Ship  {
     size=40;
     length=30;
     angle=0;
-    health=15;
+    health=10;
   } 
   public int getX(){
     return xcoord;
@@ -81,7 +81,7 @@ public class Ship  {
     g.setColor(Color.DARK_GRAY);
     g.drawLine(xcoord,ycoord,(int)(xcoord+length*Math.cos(angle)),(int)(ycoord-length*Math.sin(angle)));
     g.setColor(Color.RED);
- 	g.fillRect(700-200,40,health*12,20);
+ 	g.fillRect(Game.size-10*12-30,40,health*12,20);
   }
   
 }

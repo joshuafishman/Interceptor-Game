@@ -15,7 +15,7 @@ long tprev;
 		target=s;
 		size=300;
 		velX=1.5;
-		health=10;
+		health=40;
 		angle=180;
 		tprev= System.currentTimeMillis();
 	}
@@ -71,8 +71,8 @@ long tprev;
 		g.fillOval((int)xcoord+size*4/10-size/50, (int)ycoord+size/8, size/10, size/10);
 		g.fillRect((int)xcoord+size*2/10, (int)ycoord+size/8, size/10, size/10);
 		aimAt(g,xcoord+size*2/10+size/20, ycoord+size/8+size/20);
-		g.setColor(Color.RED);
-		g.fillRect(270,650,health*5,20);
+		g.setColor(new Color(200,0,55));
+		g.fillRect(Game.size/2-health*7/2,650,health*7,20);
 		}
 	}
 
