@@ -45,7 +45,7 @@ public class Missile {
     return ycoord;
   }
   public void explode(Graphics g){
-	  for(int i=0;i<700;i++){
+	  for(int i=0;i<1500;i++){
 		  g.setColor(Color.ORANGE);
 		  g.fillOval((int)(xcoord),(int)(ycoord),size,size);
 	  }
