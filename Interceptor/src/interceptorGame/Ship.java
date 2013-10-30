@@ -65,13 +65,6 @@ public class Ship  {
     }
   }
   public Bullet shoot(){
-    int d=1;
-    if(Math.cos(angle)>0){
-     d=-1;
-    }
-    else if(Math.cos(angle)<0){
-     d=1;
-    }
      return new Bullet((int)(xcoord+length*Math.cos(angle)),(int)(ycoord-length*Math.sin(angle)),angle);
   }
   public void paint(Graphics g){
