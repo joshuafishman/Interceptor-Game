@@ -292,6 +292,9 @@ public class Game extends Frame {
 						for(int i=0;i<lasers.size();i++){
 							lasers.get(i).paint(g);
 						}
+						for(int i=0;i<powerups.size();i++){
+							powerups.get(i).paint(g);
+						}
 						if(boss!=null){
 							boss.paint(g);
 						}
@@ -318,6 +321,9 @@ public class Game extends Frame {
 					}
 					for(int i=0;i<lasers.size();i++){
 						lasers.get(i).paint(g);
+					}
+					for(int i=0;i<powerups.size();i++){
+						powerups.get(i).paint(g);
 					}
 					ship.paint(g);
 					g.setColor(Color.WHITE);  
