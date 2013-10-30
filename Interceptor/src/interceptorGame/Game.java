@@ -226,7 +226,7 @@ public class Game extends Frame {
 	    	g.fillPolygon(xvalsc,yvalsc,3);
 	    	g.setColor(Color.WHITE);
 	    	g.drawString("Destroy them!",size/2-100,610);
-		}
+		} 
 		else if( System.currentTimeMillis()-tStart>7001){
 			if(boss==null||boss.health>0){
 					if(!paused){
